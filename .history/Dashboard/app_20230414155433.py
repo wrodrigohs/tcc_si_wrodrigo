@@ -25,13 +25,13 @@ st.set_page_config(page_title='Análise dos dados do TSE',
 @st.cache_data
 def get_data(dados):
     if (dados == 'Estadual - 1º turno'):
-        df = pd.read_csv('Dashboard/data/df_estados_1turno_2020.csv')
+        df = pd.read_csv('data/df_estados_1turno_2020.csv')
     elif (dados == 'Estadual - 2º turno'):
-        df = pd.read_csv('Dashboard/data/df_estados_2turno_2020.csv')
+        df = pd.read_csv('data/df_estados_2turno_2020.csv')
     elif (dados == 'Municipal - 1º turno'):
-        df = pd.read_csv('Dashboard/data/df_municipios_1turno_2020.csv')
+        df = pd.read_csv('data/df_municipios_1turno_2020.csv')
     else:
-        df = pd.read_csv('Dashboard/data/df_municipios_2turno_2020.csv')
+        df = pd.read_csv('data/df_municipios_2turno_2020.csv')
     return df
 
 
@@ -96,7 +96,7 @@ if ((dados == 'Estadual - 1º turno')
     Q1, Q2 = st.columns(2)
     with Q1:
         st.write('Comparecimento percentual por estado')
-        geo = gpd.read_file('Dashboard/data/geo.gpkg', layer='lim_unidade_federacao_a')
+        geo = gpd.read_file('data/geo.gpkg', layer='lim_unidade_federacao_a')
         geo.rename({'sigla': 'estado'}, axis=1, inplace=True)
         geo = geo.sort_values(by='estado', ascending=True)
         geo = geo.reset_index(drop=True)
