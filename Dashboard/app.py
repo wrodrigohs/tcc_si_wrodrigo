@@ -709,26 +709,26 @@ else:
 
         with Q1:
             htmlFile = open(
-                "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\municipios_1turno\\mapa1_municipios_1turno.html", 'r', encoding='utf-8')
+                "Dashboard/data/charts/municipios_1turno/mapa1_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
         with Q2:
             htmlFile = open(
-                "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\municipios_1turno\\mapa2_municipios_1turno.html", 'r', encoding='utf-8')
+                "Dashboard/data/charts/municipios_1turno/mapa2_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
         with Q3:
             htmlFile = open(
-                "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\municipios_1turno\\mapa3_municipios_1turno.html", 'r', encoding='utf-8')
+                "Dashboard/data/charts/municipios_1turno/mapa3_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
     else:
         with st.empty():
             htmlFile = open(
-                "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\municipios_2turno\\mapa_municipios_2turno.html", 'r', encoding='utf-8')
+                "Dashboard/data/charts/municipios_2turno/mapa_municipios_2turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
     
