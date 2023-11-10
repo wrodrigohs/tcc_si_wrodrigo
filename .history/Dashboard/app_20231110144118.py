@@ -22,7 +22,7 @@ st.set_page_config(page_title='Análise dos dados do TSE',
                    initial_sidebar_state='collapsed')
 
 
-@st.cache_data
+@st.experimental_memo
 def get_data(dados):
     if (dados == 'Estadual - 1º turno'):
         df = pd.read_csv('Dashboard/data/df_estados_1turno_2020.csv')
@@ -57,26 +57,26 @@ abstencao_percentual = float(df['abstencao_percentual(%)'].mean())
 total1, total2, total3, total4, total5 = st.columns(5, gap='large')
 
 with total1:
-    st.image('Dashboard/images/voters.png', use_column_width='Auto')
+    st.image('images/voters.png', use_column_width='Auto')
     st.metric(label='Eleitores aptos', value=numerize(total_eleitores))
 
 with total2:
-    st.image('Dashboard/images/mulher.png', use_column_width='Auto')
+    st.image('images/mulher.png', use_column_width='Auto')
     st.metric(label='Eleitorado feminino',
               value=numerize(total_eleitores_feminino))
 
 with total3:
-    st.image('Dashboard/images/masculino.png', use_column_width='Auto')
+    st.image('images/masculino.png', use_column_width='Auto')
     st.metric(label='Eleitorado masculino',
               value=numerize(total_eleitores_masculino))
 
 with total4:
-    st.image('Dashboard/images/voto.png', use_column_width='Auto')
+    st.image('images/voto.png', use_column_width='Auto')
     st.metric(label='Comparecimento percentual', value='{:0,.2f}%'.format(
         comparecimento_percentual).replace('.', ','))
 
 with total5:
-    st.image('Dashboard/images/votar-nao.png', use_column_width='Auto')
+    st.image('images/votar-nao.png', use_column_width='Auto')
     st.metric(label='Abstenção percentual', value='{:0,.2f}%'.format(
         abstencao_percentual).replace('.', ','))
 
@@ -486,7 +486,7 @@ if ((dados == 'Estadual - 1º turno')
         my_layout = Layout(hoverlabel=dict(
             bgcolor='#FFFFFF'), template='simple_white')
 
-        fig_deficientes = go.Figure()
+        fig_deficientes = go.Figure(layout=my_layout)
         fig_deficientes.update_xaxes(title_text=' ')
         fig_deficientes.update_yaxes(title_text=' ')
         fig_deficientes.update_layout(
@@ -554,7 +554,10 @@ if ((dados == 'Estadual - 1º turno')
         top_10_deficiencia_percentual = df[['estado', 'eleitores_deficiencia_percentual(%)']].sort_values(
             by='eleitores_deficiencia_percentual(%)', ascending=False)[:10].reset_index()
 
-        fig_percentual_deficientes = go.Figure()
+        my_layout = Layout(hoverlabel=dict(
+            bgcolor='#FFFFFF'), template='simple_white')
+        
+        fig_percentual_deficientes = go.Figure(layout=my_layout)
         fig_percentual_deficientes.update_layout(
             plot_bgcolor='rgba(0,0,0,0)',
             xaxis_range=[0, 100],
@@ -1003,7 +1006,7 @@ else:
 
         my_layout = Layout(hoverlabel = dict(bgcolor = '#FFFFFF'), template='simple_white')
 
-        fig_deficientes = go.Figure()
+        fig_deficientes = go.Figure(layout=my_layout)
         fig_deficientes.update_xaxes(title_text=' ')
         fig_deficientes.update_yaxes(title_text=' ')
         fig_deficientes.update_layout(
@@ -1055,12 +1058,14 @@ else:
         elif (dados == 'Municipal - 2º turno'):
             fig_deficientes.update_layout(
                 plot_bgcolor='rgba(0,0,0,0)',
-                yaxis_range=[0, 70000],
+                yaxis_range=[0, 200000],
                 yaxis=dict(
-                    tickvals=[0, 10000, 20000, 30000,
-                        40000, 50000, 60000, 70000],
-                    ticktext=['0', '10 mil', '20 mil', '30 mil',
-                        '40 mil', '50 mil', '60 mil', '70 mil'])
+                    tickvals=[0, 25000, 50000, 75000,
+                        100000, 125000,
+                        150000, 175000, 200000],
+                    ticktext=['0', '25 mil', '50 mil', '75 mil',
+                        '100 mil', '125 mil', '150 mil',
+                        '175 mil', '200 mil'])
             )
 
         st.plotly_chart(fig_deficientes, use_container_width=True)
@@ -1091,7 +1096,10 @@ else:
         top_10_deficiencia_percentual = df[['municipio', 'eleitores_deficiencia_percentual(%)']].sort_values(
             by='eleitores_deficiencia_percentual(%)', ascending=False)[:10].reset_index()
 
-        fig_percentual_deficientes = go.Figure()
+        my_layout = Layout(hoverlabel=dict(
+            bgcolor='#FFFFFF'), template='simple_white')
+        
+        fig_percentual_deficientes = go.Figure(layout=my_layout)
         fig_percentual_deficientes.update_layout(
             plot_bgcolor='rgba(0,0,0,0)',
             xaxis_range=[0, 100],
@@ -1233,5 +1241,3 @@ else:
             st.plotly_chart(fig, use_container_width=True)
 
         plot_chart(estado, municipios, indexMunicipio, df)
-
-    
