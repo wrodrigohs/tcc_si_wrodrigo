@@ -25,13 +25,13 @@ st.set_page_config(page_title='Análise dos dados do TSE',
 @st.experimental_memo
 def get_data(dados):
     if (dados == 'Estadual - 1º turno'):
-        df = pd.read_csv('Dashboard/data/df_estados_1turno_2020.csv')
+        df = pd.read_csv('data/df_estados_1turno_2020.csv')
     elif (dados == 'Estadual - 2º turno'):
-        df = pd.read_csv('Dashboard/data/df_estados_2turno_2020.csv')
+        df = pd.read_csv('data/df_estados_2turno_2020.csv')
     elif (dados == 'Municipal - 1º turno'):
-        df = pd.read_csv('Dashboard/data/df_municipios_1turno_2020.csv')
+        df = pd.read_csv('data/df_municipios_1turno_2020.csv')
     else:
-        df = pd.read_csv('Dashboard/data/df_municipios_2turno_2020.csv')
+        df = pd.read_csv('data/df_municipios_2turno_2020.csv')
     return df
 
 
@@ -57,26 +57,26 @@ abstencao_percentual = float(df['abstencao_percentual(%)'].mean())
 total1, total2, total3, total4, total5 = st.columns(5, gap='large')
 
 with total1:
-    st.image('Dashboard/images/voters.png', use_column_width='Auto')
+    st.image('images/voters.png', use_column_width='Auto')
     st.metric(label='Eleitores aptos', value=numerize(total_eleitores))
 
 with total2:
-    st.image('Dashboard/images/mulher.png', use_column_width='Auto')
+    st.image('images/mulher.png', use_column_width='Auto')
     st.metric(label='Eleitorado feminino',
               value=numerize(total_eleitores_feminino))
 
 with total3:
-    st.image('Dashboard/images/masculino.png', use_column_width='Auto')
+    st.image('images/masculino.png', use_column_width='Auto')
     st.metric(label='Eleitorado masculino',
               value=numerize(total_eleitores_masculino))
 
 with total4:
-    st.image('Dashboard/images/voto.png', use_column_width='Auto')
+    st.image('images/voto.png', use_column_width='Auto')
     st.metric(label='Comparecimento percentual', value='{:0,.2f}%'.format(
         comparecimento_percentual).replace('.', ','))
 
 with total5:
-    st.image('Dashboard/images/votar-nao.png', use_column_width='Auto')
+    st.image('images/votar-nao.png', use_column_width='Auto')
     st.metric(label='Abstenção percentual', value='{:0,.2f}%'.format(
         abstencao_percentual).replace('.', ','))
 
@@ -99,12 +99,12 @@ if ((dados == 'Estadual - 1º turno')
 
         if (dados == 'Estadual - 1º turno'):
             htmlFile = open(
-                    "Dashboard/data/charts/estados_1turno/mapa_estados_1turno.html", 'r', encoding='utf-8')
+                    "data/charts/estados_1turno/mapa_estados_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, width=620, height=460)
         else:
             htmlFile = open(
-                    "Dashboard/data/charts/estados_2turno/mapa_estados_2turno.html", 'r', encoding='utf-8')
+                    "data/charts/estados_2turno/mapa_estados_2turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, width=620, height=460)
 
@@ -261,6 +261,21 @@ if ((dados == 'Estadual - 1º turno')
         fig.update_yaxes(ticksuffix = "")
 
         st.plotly_chart(fig, use_container_width=True)
+
+        #if (dados == 'Estadual - 1º turno'):
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\estados_1turno\\estadosEscolaridade_1turno.html", 'r', encoding='utf-8')
+        #elif (dados == 'Estadual - 2º turno'):
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\estados_2turno\\estadosEscolaridade_2turno.html", 'r', encoding='utf-8')
+        #elif (dados == 'Municipal - 1º turno'):
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\municipios_1turno\\municipiosEscolaridade_1turno.html", 'r', encoding='utf-8')
+        #else:
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\municipios_2turno\\municipiosEscolaridade_2turno.html", 'r', encoding='utf-8')
+        #source_code = htmlFile.read()
+        #components.html(source_code, height=480)
 
         with Q6:
             #ESCOLARIDADE POR ESTADO
@@ -689,19 +704,19 @@ else:
 
         with Q1:
             htmlFile = open(
-                "Dashboard/data/charts/municipios_1turno/mapa1_municipios_1turno.html", 'r', encoding='utf-8')
+                "data/charts/municipios_1turno/mapa1_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
         with Q2:
             htmlFile = open(
-                "Dashboard/data/charts/municipios_1turno/mapa2_municipios_1turno.html", 'r', encoding='utf-8')
+                "data/charts/municipios_1turno/mapa2_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
         with Q3:
             htmlFile = open(
-                "Dashboard/data/charts/municipios_1turno/mapa3_municipios_1turno.html", 'r', encoding='utf-8')
+                "data/charts/municipios_1turno/mapa3_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
@@ -709,7 +724,7 @@ else:
         Q4, Q5 = st.columns(2)
         with Q4:
             htmlFile = open(
-                "Dashboard/data/charts/municipios_2turno/mapa_municipios_2turno.html", 'r', encoding='utf-8')
+                "data/charts/municipios_2turno/mapa_municipios_2turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 

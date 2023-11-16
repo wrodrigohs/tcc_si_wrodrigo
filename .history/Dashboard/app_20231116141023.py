@@ -262,6 +262,21 @@ if ((dados == 'Estadual - 1º turno')
 
         st.plotly_chart(fig, use_container_width=True)
 
+        #if (dados == 'Estadual - 1º turno'):
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\estados_1turno\\estadosEscolaridade_1turno.html", 'r', encoding='utf-8')
+        #elif (dados == 'Estadual - 2º turno'):
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\estados_2turno\\estadosEscolaridade_2turno.html", 'r', encoding='utf-8')
+        #elif (dados == 'Municipal - 1º turno'):
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\municipios_1turno\\municipiosEscolaridade_1turno.html", 'r', encoding='utf-8')
+        #else:
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\municipios_2turno\\municipiosEscolaridade_2turno.html", 'r', encoding='utf-8')
+        #source_code = htmlFile.read()
+        #components.html(source_code, height=480)
+
         with Q6:
             #ESCOLARIDADE POR ESTADO
             # st.write('Divisão por escolaridade por estado')

@@ -57,26 +57,26 @@ abstencao_percentual = float(df['abstencao_percentual(%)'].mean())
 total1, total2, total3, total4, total5 = st.columns(5, gap='large')
 
 with total1:
-    st.image('Dashboard/images/voters.png', use_column_width='Auto')
+    st.image('images/voters.png', use_column_width='Auto')
     st.metric(label='Eleitores aptos', value=numerize(total_eleitores))
 
 with total2:
-    st.image('Dashboard/images/mulher.png', use_column_width='Auto')
+    st.image('images/mulher.png', use_column_width='Auto')
     st.metric(label='Eleitorado feminino',
               value=numerize(total_eleitores_feminino))
 
 with total3:
-    st.image('Dashboard/images/masculino.png', use_column_width='Auto')
+    st.image('images/masculino.png', use_column_width='Auto')
     st.metric(label='Eleitorado masculino',
               value=numerize(total_eleitores_masculino))
 
 with total4:
-    st.image('Dashboard/images/voto.png', use_column_width='Auto')
+    st.image('images/voto.png', use_column_width='Auto')
     st.metric(label='Comparecimento percentual', value='{:0,.2f}%'.format(
         comparecimento_percentual).replace('.', ','))
 
 with total5:
-    st.image('Dashboard/images/votar-nao.png', use_column_width='Auto')
+    st.image('images/votar-nao.png', use_column_width='Auto')
     st.metric(label='Abstenção percentual', value='{:0,.2f}%'.format(
         abstencao_percentual).replace('.', ','))
 
@@ -261,6 +261,21 @@ if ((dados == 'Estadual - 1º turno')
         fig.update_yaxes(ticksuffix = "")
 
         st.plotly_chart(fig, use_container_width=True)
+
+        #if (dados == 'Estadual - 1º turno'):
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\estados_1turno\\estadosEscolaridade_1turno.html", 'r', encoding='utf-8')
+        #elif (dados == 'Estadual - 2º turno'):
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\estados_2turno\\estadosEscolaridade_2turno.html", 'r', encoding='utf-8')
+        #elif (dados == 'Municipal - 1º turno'):
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\municipios_1turno\\municipiosEscolaridade_1turno.html", 'r', encoding='utf-8')
+        #else:
+        #    htmlFile = open(
+        #        "D:\\UFMS\\TCC\\Dashboard\\data\\charts\\municipios_2turno\\municipiosEscolaridade_2turno.html", 'r', encoding='utf-8')
+        #source_code = htmlFile.read()
+        #components.html(source_code, height=480)
 
         with Q6:
             #ESCOLARIDADE POR ESTADO
@@ -706,34 +721,15 @@ else:
             components.html(source_code, height=480)
 
     else:
-        Q4, Q5 = st.columns(2)
-        with Q4:
+        with st.empty():
             htmlFile = open(
                 "Dashboard/data/charts/municipios_2turno/mapa_municipios_2turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
+    
+    Q4, Q5, Q55 = st.columns(3)
 
-        with Q5:
-            def plot_chart(estadoIndex, municipios, index, df):
-                estado = format_func_estado(estadoIndex)
-                cidade = municipios[index]
-
-                valor = df.loc[(df['estado'] == estado)
-                            & (df['municipio'] == cidade), 'comparecimento_percentual(%)'].values[0]
-                fig = go.Figure(
-                    go.Indicator(
-                        value=valor,
-                        title={'text': f"Comparecimento percentual em {cidade}"},
-                        number={'font_color': '#355070', "suffix":"%",
-                                'font_size': 70, "valueformat": ".2f"},
-                        align='center'))
-
-                st.plotly_chart(fig, use_container_width=True)
-
-            plot_chart(estado, municipios, indexMunicipio, df)    
-    Q6, Q7 = st.columns(2)
-
-    with Q6:
+    with Q4:
         st.write('Divisão de sexos por município')
 
         def plot_chart(estadoIndex, municipios, index, df):
@@ -783,7 +779,7 @@ else:
 
         plot_chart(estado, municipios, indexMunicipio, df)
 
-    with Q7:
+    with Q5:
         #ESCOLARIDADE POR MUNICÍPIO
         st.write('Divisão por escolaridade por município')
 
@@ -861,9 +857,28 @@ else:
             st.plotly_chart(fig, use_container_width=True)
 
         plot_chart(estado, municipios, indexMunicipio, df)
+    
+    with Q55:
+        def plot_chart(estadoIndex, municipios, index, df):
+            estado = format_func_estado(estadoIndex)
+            cidade = municipios[index]
 
-    Q8, Q9 = st.columns(2)
-    with Q8:
+            valor = df.loc[(df['estado'] == estado)
+                           & (df['municipio'] == cidade), 'comparecimento_percentual(%)'].values[0]
+            fig = go.Figure(
+                go.Indicator(
+                    value=valor,
+                    title={'text': f"Comparecimento percentual em {cidade}"},
+                    number={'font_color': '#355070', "suffix":"%",
+                            'font_size': 70, "valueformat": ".2f"},
+                    align='center'))
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        plot_chart(estado, municipios, indexMunicipio, df)
+
+    Q6, Q7 = st.columns(2)
+    with Q6:
         st.write('Municípios com mais eleitores analfabetos')
         top_10_analfabetos = df[['municipio', 'analfabeto']].sort_values(
             by='analfabeto', ascending=False)[:10]
@@ -903,7 +918,7 @@ else:
 
         st.plotly_chart(fig_analfabetos, use_container_width=True)
 
-    with Q9:
+    with Q7:
         def plot_chart(estadoIndex, municipios, index, df):
             estado = format_func_estado(estadoIndex)
             cidade = municipios[index]
@@ -922,8 +937,8 @@ else:
 
         plot_chart(estado, municipios, indexMunicipio, df)
     
-    Q10, Q11 = st.columns(2)
-    with Q10:
+    Q8, Q9 = st.columns(2)
+    with Q8:
         st.write('Municípios com maior percentual de eleitores analfabetos')
         top_10_analfabetos = df[['municipio', 'analfabeto_percentual(%)']].sort_values(
             by='analfabeto_percentual(%)', ascending=False)[:10]
@@ -953,7 +968,7 @@ else:
             )
         st.plotly_chart(fig_analfabetos_percentual, use_container_width=True)
 
-    with Q11:
+    with Q9:
         #ANALFABETISMO PERCENTUAL MUNICIPAL
         def plot_chart(estadoIndex, municipios, index, df):
             estado = format_func_estado(estadoIndex)
@@ -973,8 +988,8 @@ else:
 
         plot_chart(estado, municipios, indexMunicipio, df)
 
-    Q12, Q13 = st.columns(2)
-    with Q12:
+    Q10, Q11 = st.columns(2)
+    with Q10:
         #ELEITORADO COM DEFICIÊNCIA
         st.write('Municípios com mais eleitores com deficiência')
         top_10_deficiencia = df[['municipio', 'eleitores_deficiencia']].drop_duplicates().sort_values(by = 'eleitores_deficiencia', ascending = False)[:10].reset_index()
@@ -1047,7 +1062,7 @@ else:
 
         st.plotly_chart(fig_deficientes, use_container_width=True)
 
-    with Q13:
+    with Q11:
         #ELEITORADO MUNICIPAL COM DEFICIÊNCIA
         def plot_chart(estadoIndex, municipios, index, df):
             estado = format_func_estado(estadoIndex)
@@ -1067,8 +1082,8 @@ else:
 
         plot_chart(estado, municipios, indexMunicipio, df)
 
-    Q14, Q15 = st.columns(2)
-    with Q14:
+    Q12, Q13 = st.columns(2)
+    with Q12:
         st.write('Municípios com maior percentual de eleitores com deficiência')
         top_10_deficiencia_percentual = df[['municipio', 'eleitores_deficiencia_percentual(%)']].sort_values(
             by='eleitores_deficiencia_percentual(%)', ascending=False)[:10].reset_index()
@@ -1121,7 +1136,7 @@ else:
 
         st.plotly_chart(fig_percentual_deficientes, use_container_width=True)
 
-    with Q15:
+    with Q13:
         def plot_chart(estadoIndex, municipios, index, df):
             estado = format_func_estado(estadoIndex)
             cidade = municipios[index]
@@ -1140,14 +1155,14 @@ else:
 
         plot_chart(estado, municipios, indexMunicipio, df)
 
-    Q16, Q17 = st.columns(2)
+    Q14, Q15 = st.columns(2)
 
     facultativos = df[['estado', 'municipio', 'eleitorado_facultativo_percentual(%)','16_anos_percentual(%)', '17_anos_percentual(%)', 
       '65_69_anos_percentual(%)', '70_74_anos_percentual(%)', '75_79_anos_percentual(%)',
        '80_84_anos_percentual(%)', '85_89_anos_percentual(%)', '90_94_anos_percentual(%)',
        '95_99_anos_percentual(%)', '100_anos_percentual(%)']].sort_values(by = 'eleitorado_facultativo_percentual(%)', ascending = False)
     
-    with Q16:
+    with Q14:
         st.write('Municípios com maior eleitorado facultativo')
         jovens = facultativos['16_anos_percentual(%)'] + facultativos['17_anos_percentual(%)']
         idosos = facultativos['65_69_anos_percentual(%)'] + facultativos['70_74_anos_percentual(%)'] + facultativos['75_79_anos_percentual(%)'] + facultativos['80_84_anos_percentual(%)'] + facultativos['85_89_anos_percentual(%)'] + facultativos['90_94_anos_percentual(%)'] + facultativos['95_99_anos_percentual(%)'] + facultativos['100_anos_percentual(%)']
@@ -1200,7 +1215,7 @@ else:
 
         st.plotly_chart(fig_facultativo, use_container_width=True)
     
-    with Q17:
+    with Q15:
         def plot_chart(estadoIndex, municipios, index, df):
             estado = format_func_estado(estadoIndex)
             cidade = municipios[index]
