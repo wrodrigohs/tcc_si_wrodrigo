@@ -57,26 +57,26 @@ abstencao_percentual = float(df['abstencao_percentual(%)'].mean())
 total1, total2, total3, total4, total5 = st.columns(5, gap='large')
 
 with total1:
-    st.image('images/voters.png', use_column_width='Auto')
+    st.image('Dashboard/images/voters.png', use_column_width='Auto')
     st.metric(label='Eleitores aptos', value=numerize(total_eleitores))
 
 with total2:
-    st.image('images/mulher.png', use_column_width='Auto')
+    st.image('Dashboard/images/mulher.png', use_column_width='Auto')
     st.metric(label='Eleitorado feminino',
               value=numerize(total_eleitores_feminino))
 
 with total3:
-    st.image('images/masculino.png', use_column_width='Auto')
+    st.image('Dashboard/images/masculino.png', use_column_width='Auto')
     st.metric(label='Eleitorado masculino',
               value=numerize(total_eleitores_masculino))
 
 with total4:
-    st.image('images/voto.png', use_column_width='Auto')
+    st.image('Dashboard/images/voto.png', use_column_width='Auto')
     st.metric(label='Comparecimento percentual', value='{:0,.2f}%'.format(
         comparecimento_percentual).replace('.', ','))
 
 with total5:
-    st.image('images/votar-nao.png', use_column_width='Auto')
+    st.image('Dashboard/images/votar-nao.png', use_column_width='Auto')
     st.metric(label='Abstenção percentual', value='{:0,.2f}%'.format(
         abstencao_percentual).replace('.', ','))
 
@@ -130,12 +130,12 @@ if ((dados == 'Estadual - 1º turno')
             htmlFile = open(
                     "Dashboard/data/charts/estados_1turno/mapa_estados_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
-            components.html(source_code, width=620, height=460)
+            components.html(source_code, width=680, height=440)
         else:
             htmlFile = open(
                     "Dashboard/data/charts/estados_2turno/mapa_estados_2turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
-            components.html(source_code, width=620, height=460)
+            components.html(source_code, width=680, height=440)
 
     with Q2:
         def plot_chart(estadoIndex, df):

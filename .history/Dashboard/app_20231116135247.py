@@ -25,13 +25,13 @@ st.set_page_config(page_title='Análise dos dados do TSE',
 @st.experimental_memo
 def get_data(dados):
     if (dados == 'Estadual - 1º turno'):
-        df = pd.read_csv('Dashboard/data/df_estados_1turno_2020.csv')
+        df = pd.read_csv('data/df_estados_1turno_2020.csv')
     elif (dados == 'Estadual - 2º turno'):
-        df = pd.read_csv('Dashboard/data/df_estados_2turno_2020.csv')
+        df = pd.read_csv('data/df_estados_2turno_2020.csv')
     elif (dados == 'Municipal - 1º turno'):
-        df = pd.read_csv('Dashboard/data/df_municipios_1turno_2020.csv')
+        df = pd.read_csv('data/df_municipios_1turno_2020.csv')
     else:
-        df = pd.read_csv('Dashboard/data/df_municipios_2turno_2020.csv')
+        df = pd.read_csv('data/df_municipios_2turno_2020.csv')
     return df
 
 
@@ -96,7 +96,7 @@ if ((dados == 'Estadual - 1º turno')
     Q1, Q2 = st.columns(2)
     with Q1:
         st.write('Comparecimento percentual por estado')
-        #geo = gpd.read_file('Dashboard/data/estados.gpkg')
+        #geo = gpd.read_file('data/estados.gpkg')
         #geo.rename({'sigla': 'estado'}, axis=1, inplace=True)
         #geo = geo.sort_values(by='estado', ascending=True)
         #geo = geo.reset_index(drop=True)
@@ -128,14 +128,14 @@ if ((dados == 'Estadual - 1º turno')
         st.write(dados)
         if (dados == 'Estadual - 1º turno'):
             htmlFile = open(
-                    "Dashboard/data/charts/estados_1turno/mapa_estados_1turno.html", 'r', encoding='utf-8')
+                    "data/charts/estados_1turno/mapa_estados_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
-            components.html(source_code, width=620, height=460)
+            components.html(source_code, width=680, height=440)
         else:
             htmlFile = open(
-                    "Dashboard/data/charts/estados_2turno/mapa_estados_2turno.html", 'r', encoding='utf-8')
+                    "data/charts/estados_2turno/mapa_estados_2turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
-            components.html(source_code, width=620, height=460)
+            components.html(source_code, width=680, height=440)
 
     with Q2:
         def plot_chart(estadoIndex, df):
@@ -733,26 +733,26 @@ else:
 
         with Q1:
             htmlFile = open(
-                "Dashboard/data/charts/municipios_1turno/mapa1_municipios_1turno.html", 'r', encoding='utf-8')
+                "data/charts/municipios_1turno/mapa1_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
         with Q2:
             htmlFile = open(
-                "Dashboard/data/charts/municipios_1turno/mapa2_municipios_1turno.html", 'r', encoding='utf-8')
+                "data/charts/municipios_1turno/mapa2_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
         with Q3:
             htmlFile = open(
-                "Dashboard/data/charts/municipios_1turno/mapa3_municipios_1turno.html", 'r', encoding='utf-8')
+                "data/charts/municipios_1turno/mapa3_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
     else:
         with st.empty():
             htmlFile = open(
-                "Dashboard/data/charts/municipios_2turno/mapa_municipios_2turno.html", 'r', encoding='utf-8')
+                "data/charts/municipios_2turno/mapa_municipios_2turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
     
