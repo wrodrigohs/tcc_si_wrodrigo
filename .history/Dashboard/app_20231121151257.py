@@ -291,6 +291,8 @@ if ((dados == 'Estadual - 1º turno')
                 }
 
             df = pd.DataFrame(data)
+            
+            st.write(df)
             fig = go.Figure()
 
             fig.add_trace(go.Bar(

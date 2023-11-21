@@ -291,6 +291,8 @@ if ((dados == 'Estadual - 1º turno')
                 }
 
             df = pd.DataFrame(data)
+            
+            st.write(df)
             fig = go.Figure()
 
             fig.add_trace(go.Bar(
@@ -322,11 +324,11 @@ if ((dados == 'Estadual - 1º turno')
                   'solteiro_masculino'].values[0] - 50000, -df.loc[(df['estado'] == estado), 
                   'solteiro_masculino'].values[0]+ 50000], 
                            xaxis=dict(tickvals=[df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] - 50000, df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] / 2, 0 , -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]/ 2, -df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0] - 50000, -df.loc[(df['estado'] == estado), 
                   'solteiro_masculino'].values[0]+ 50000],
-                                      ),
+                                      ticktext=['8500000', '7000000', '5500000', '4000000', '2500000', 
+                                        '1000000', '0,' '1000000', '2500000', '4000000', 
+                                        '5500000', '7000000', '8500000']),
                                      )
             fig.update_traces(width=0.5)
             fig.update_xaxes(ticksuffix="")

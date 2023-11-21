@@ -269,35 +269,40 @@ if ((dados == 'Estadual - 1º turno')
             data = {
                 'estado': [estado],
                 'solteiro_masculino': [df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] * -1],
+                  'solteiro_masculino'].values[0].astype('int')],
                 'casado_masculino': [df.loc[(df['estado'] == estado), 
-                  'casado_masculino'].values[0] * -1],
+                  'casado_masculino'].values[0].astype('int')],
                 'divorciado_masculino': [df.loc[(df['estado'] == estado), 
-                  'divorciado_masculino'].values[0] * -1],
+                  'divorciado_masculino'].values[0].astype('int')],
                 'viuvo_masculino': [df.loc[(df['estado'] == estado), 
-                  'viuvo_masculino'].values[0] * -1],
+                  'viuvo_masculino'].values[0].astype('int')],
                 'separado_judicialmente_masculino': [df.loc[(df['estado'] == estado), 
-                  'separado_judicialmente_masculino'].values[0] * -1],
+                  'separado_judicialmente_masculino'].values[0].astype('int')],
                 'solteiro_feminino': [df.loc[(df['estado'] == estado), 
-                  'solteiro_feminino'].values[0]],
+                  'solteiro_feminino'].values[0].astype('int')],
                 'casado_feminino': [df.loc[(df['estado'] == estado), 
-                  'casado_feminino'].values[0]],
+                  'casado_feminino'].values[0].astype('int')],
                 'divorciado_feminino': [df.loc[(df['estado'] == estado), 
-                  'divorciado_feminino'].values[0]],
+                  'divorciado_feminino'].values[0].astype('int')],
                 'viuvo_feminino': [df.loc[(df['estado'] == estado), 
-                  'viuvo_feminino'].values[0]],
+                  'viuvo_feminino'].values[0].astype('int')],
                 'separado_judicialmente_feminino': [df.loc[(df['estado'] == estado), 
-                  'separado_judicialmente_feminino'].values[0]],
+                  'separado_judicialmente_feminino'].values[0].astype('int')],
                 }
 
             df = pd.DataFrame(data)
+            df_estado = df[df['estado'] == estado]
+            
             fig = go.Figure()
 
             fig.add_trace(go.Bar(
                 y=['Separado judicialmente', 'Divorciado', 'Solteiro', 'Casado', 'Viúvo'],
-                x=df[['separado_judicialmente_masculino', 'divorciado_masculino', 'solteiro_masculino', 'casado_masculino', 'viuvo_masculino']].iloc[0],
+                x=df_estado[['separado_judicialmente_masculino', 'divorciado_masculino', 'solteiro_masculino', 'casado_masculino', 'viuvo_masculino']].iloc[0],
                 orientation='h',
                 name='Homens',
+                base=0,
+                # customdata=homens.astype('int'),
+                # hovertemplate='%{y} %{customdata}',
                 hoverinfo='x+text',
                 marker=dict(color=['#355070', '#355070', '#355070', '#355070', '#355070']),
             ))
@@ -305,7 +310,7 @@ if ((dados == 'Estadual - 1º turno')
             # Adicionar barras correspondentes para mulheres
             fig.add_trace(go.Bar(
                 y=['Separado judicialmente', 'Divorciado', 'Solteiro', 'Casado', 'Viúvo'],
-                x=df[['separado_judicialmente_feminino', 'divorciado_feminino', 'solteiro_feminino', 'casado_feminino', 'viuvo_feminino',]].iloc[0],
+                x=df_estado[['separado_judicialmente_feminino', 'divorciado_feminino', 'solteiro_feminino', 'casado_feminino', 'viuvo_feminino',]].iloc[0],
                 orientation='h',
                 name='Mulheres',
                 hoverinfo='x+text',
@@ -313,20 +318,18 @@ if ((dados == 'Estadual - 1º turno')
             ))
 
             # Atualizar layout e mostrar a figura
-            fig.update_layout(barmode='relative', title='', plot_bgcolor="rgba(0,0,0,0)",
+            fig.update_layout(barmode='stack', title='', plot_bgcolor="rgba(0,0,0,0)",
                           hoverlabel=dict(bgcolor='#FFFFFF'),
                           template='simple_white',
                           bargap=0, bargroupgap=0,
                           margin=dict(l=1, r=1, t=60, b=1),
-                          xaxis_range=[df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] - 50000, -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]+ 50000], 
-                           xaxis=dict(tickvals=[df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] - 50000, df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] / 2, 0 , -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]/ 2, -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]+ 50000],
-                                      ),
+                          xaxis_range=[-1000000, 1000000], 
+                        #   xaxis=dict(tickvals=[-8500000, -7000000, -5500000, -4000000, -2500000, 
+                        #                -1000000, 0, 1000000, 2500000, 4000000, 
+                        #                5500000, 7000000, 8500000],
+                        #              ticktext=['8500000', '7000000', '5500000', '4000000', '2500000', 
+                        #                '1000000', '0,' '1000000', '2500000', '4000000', 
+                        #                '5500000', '7000000', '8500000']),
                                      )
             fig.update_traces(width=0.5)
             fig.update_xaxes(ticksuffix="")

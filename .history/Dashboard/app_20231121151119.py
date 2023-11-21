@@ -291,6 +291,8 @@ if ((dados == 'Estadual - 1º turno')
                 }
 
             df = pd.DataFrame(data)
+            
+            st.write(df)
             fig = go.Figure()
 
             fig.add_trace(go.Bar(
@@ -322,9 +324,7 @@ if ((dados == 'Estadual - 1º turno')
                   'solteiro_masculino'].values[0] - 50000, -df.loc[(df['estado'] == estado), 
                   'solteiro_masculino'].values[0]+ 50000], 
                            xaxis=dict(tickvals=[df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] - 50000, df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] / 2, 0 , -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]/ 2, -df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0] - 50000, -df.loc[(df['estado'] == estado), 
                   'solteiro_masculino'].values[0]+ 50000],
                                       ),
                                      )

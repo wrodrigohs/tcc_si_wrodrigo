@@ -8,6 +8,7 @@ import streamlit.components.v1 as components
 
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.plotly as py
 from plotly.graph_objs import Layout
 
 from numerize.numerize import numerize
@@ -25,13 +26,13 @@ st.set_page_config(page_title='Análise dos dados do TSE',
 @st.experimental_memo
 def get_data(dados):
     if (dados == 'Estadual - 1º turno'):
-        df = pd.read_csv('data/df_estados_1turno_2020.csv')
+        df = pd.read_csv('Dashboard/data/df_estados_1turno_2020.csv')
     elif (dados == 'Estadual - 2º turno'):
-        df = pd.read_csv('data/df_estados_2turno_2020.csv')
+        df = pd.read_csv('Dashboard/data/df_estados_2turno_2020.csv')
     elif (dados == 'Municipal - 1º turno'):
-        df = pd.read_csv('data/df_municipios_1turno_2020.csv')
+        df = pd.read_csv('Dashboard/data/df_municipios_1turno_2020.csv')
     else:
-        df = pd.read_csv('data/df_municipios_2turno_2020.csv')
+        df = pd.read_csv('Dashboard/data/df_municipios_2turno_2020.csv')
     return df
 
 
@@ -57,26 +58,26 @@ abstencao_percentual = float(df['abstencao_percentual(%)'].mean())
 total1, total2, total3, total4, total5 = st.columns(5, gap='large')
 
 with total1:
-    st.image('images/voters.png', use_column_width='Auto')
+    st.image('Dashboard/images/voters.png', use_column_width='Auto')
     st.metric(label='Eleitores aptos', value=numerize(total_eleitores))
 
 with total2:
-    st.image('images/mulher.png', use_column_width='Auto')
+    st.image('Dashboard/images/mulher.png', use_column_width='Auto')
     st.metric(label='Eleitorado feminino',
               value=numerize(total_eleitores_feminino))
 
 with total3:
-    st.image('images/masculino.png', use_column_width='Auto')
+    st.image('Dashboard/images/masculino.png', use_column_width='Auto')
     st.metric(label='Eleitorado masculino',
               value=numerize(total_eleitores_masculino))
 
 with total4:
-    st.image('images/voto.png', use_column_width='Auto')
+    st.image('Dashboard/images/voto.png', use_column_width='Auto')
     st.metric(label='Comparecimento percentual', value='{:0,.2f}%'.format(
         comparecimento_percentual).replace('.', ','))
 
 with total5:
-    st.image('images/votar-nao.png', use_column_width='Auto')
+    st.image('Dashboard/images/votar-nao.png', use_column_width='Auto')
     st.metric(label='Abstenção percentual', value='{:0,.2f}%'.format(
         abstencao_percentual).replace('.', ','))
 
@@ -99,12 +100,12 @@ if ((dados == 'Estadual - 1º turno')
 
         if (dados == 'Estadual - 1º turno'):
             htmlFile = open(
-                    "data/charts/estados_1turno/mapa_estados_1turno.html", 'r', encoding='utf-8')
+                    "Dashboard/data/charts/estados_1turno/mapa_estados_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, width=620, height=460)
         else:
             htmlFile = open(
-                    "data/charts/estados_2turno/mapa_estados_2turno.html", 'r', encoding='utf-8')
+                    "Dashboard/data/charts/estados_2turno/mapa_estados_2turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, width=620, height=460)
 
@@ -215,126 +216,37 @@ if ((dados == 'Estadual - 1º turno')
     st.write('Divisão por estado civil por estado')
     Q80, Q81 = st.columns(2)
     with Q80:
-        estado_civil = st.selectbox(label='Selecione o estado civil',
-                     options=['solteiro', 'casado', 'divorciado', 
-                              'viuvo', 'separado judicialmente'])
-        
-        if (estado_civil == 'separado judicialmente'):
-            estado_civil = 'separado_judicialmente'
-        homens = df[estado_civil + '_masculino']
-        mulheres = df[estado_civil + '_feminino']
+        women_bins = [60, 223, 353, 450, 570]
+        men_bins = [16, 80, 141, 170, 312]
 
-        estados = df['estado'].drop_duplicates()
+        y = ['Solteiro(a)', 'Casado(a)', 'Divorciado(a)', 'Viúvo(a)', 'Separado(a) judicialmente']
 
-        fig = go.Figure()
+        layout = go.Layout(yaxis=go.layout.YAxis(title='Age'),
+                        xaxis=go.layout.XAxis(
+                            range=[0, 600],
+                            tickvals=[0, 100, 200, 300, 400, 500, 600],
+                            ticktext=[0, 100, 200, 300, 400, 500, 600],
+                            title='Number'),
+                        barmode='overlay',
+                        bargap=0.1)
 
-        fig.add_trace(go.Bar(y=estados,
-                             x=mulheres,
-                             customdata=mulheres.astype('int'),
-                             hovertemplate='%{y} %{customdata}',
-                             marker_color='#FCC202',
-                             name='Mulheres',
-                             orientation='h'))
+        data = [go.Bar(y=y,
+                    x=men_bins,
+                    orientation='h',
+                    name='Homens',
+                    hoverinfo='x',
+                    marker=dict(color='powderblue')
+                    ),
+                go.Bar(y=y,
+                    x=women_bins,
+                    orientation='h',
+                    name='Mulheres',
+                    text=-1 * women_bins.astype('int'),
+                    hoverinfo='text',
+                    marker=dict(color='seagreen')
+                    )]
 
-        fig.add_trace(go.Bar(y=estados, x=homens*-1,
-                             name='Homens',
-                             customdata=homens.astype('int'),
-                             hovertemplate='%{y} %{customdata}',
-                             marker_color='#355070',
-                             orientation='h'))
-
-        fig.update_layout(title='', plot_bgcolor="rgba(0,0,0,0)",
-                          title_font_size=22, barmode='relative',
-                          hoverlabel=dict(bgcolor='#FFFFFF'),
-                          template='simple_white',
-                          bargap=0, bargroupgap=0,
-                          margin=dict(l=1, r=1, t=60, b=1),
-                          xaxis_range=[-8500000, 8500000], 
-                          xaxis=dict(tickvals=[-8500000, -7000000, -5500000, -4000000, -2500000, 
-                                       -1000000, 0, 1000000, 2500000, 4000000, 
-                                       5500000, 7000000, 8500000],
-                                     ticktext=['8500000', '7000000', '5500000', '4000000', '2500000', 
-                                       '1000000', '0,' '1000000', '2500000', '4000000', 
-                                       '5500000', '7000000', '8500000']),
-                                     )
-
-        fig.update_traces(width=0.5)
-        st.plotly_chart(fig, use_container_width=True)
-
-    with Q81:
-        def plot_chart(estadoIndex, df):
-            estado = format_func_estado(estadoIndex)
-            nomeEstado = [df.loc[(df['estado'] == estado, 'estado')].values[0]]
-            
-            data = {
-                'estado': [estado],
-                'solteiro_masculino': [df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] * -1],
-                'casado_masculino': [df.loc[(df['estado'] == estado), 
-                  'casado_masculino'].values[0] * -1],
-                'divorciado_masculino': [df.loc[(df['estado'] == estado), 
-                  'divorciado_masculino'].values[0] * -1],
-                'viuvo_masculino': [df.loc[(df['estado'] == estado), 
-                  'viuvo_masculino'].values[0] * -1],
-                'separado_judicialmente_masculino': [df.loc[(df['estado'] == estado), 
-                  'separado_judicialmente_masculino'].values[0] * -1],
-                'solteiro_feminino': [df.loc[(df['estado'] == estado), 
-                  'solteiro_feminino'].values[0]],
-                'casado_feminino': [df.loc[(df['estado'] == estado), 
-                  'casado_feminino'].values[0]],
-                'divorciado_feminino': [df.loc[(df['estado'] == estado), 
-                  'divorciado_feminino'].values[0]],
-                'viuvo_feminino': [df.loc[(df['estado'] == estado), 
-                  'viuvo_feminino'].values[0]],
-                'separado_judicialmente_feminino': [df.loc[(df['estado'] == estado), 
-                  'separado_judicialmente_feminino'].values[0]],
-                }
-
-            df = pd.DataFrame(data)
-            fig = go.Figure()
-
-            fig.add_trace(go.Bar(
-                y=['Separado judicialmente', 'Divorciado', 'Solteiro', 'Casado', 'Viúvo'],
-                x=df[['separado_judicialmente_masculino', 'divorciado_masculino', 'solteiro_masculino', 'casado_masculino', 'viuvo_masculino']].iloc[0],
-                orientation='h',
-                name='Homens',
-                hoverinfo='x+text',
-                marker=dict(color=['#355070', '#355070', '#355070', '#355070', '#355070']),
-            ))
-
-            # Adicionar barras correspondentes para mulheres
-            fig.add_trace(go.Bar(
-                y=['Separado judicialmente', 'Divorciado', 'Solteiro', 'Casado', 'Viúvo'],
-                x=df[['separado_judicialmente_feminino', 'divorciado_feminino', 'solteiro_feminino', 'casado_feminino', 'viuvo_feminino',]].iloc[0],
-                orientation='h',
-                name='Mulheres',
-                hoverinfo='x+text',
-                marker=dict(color=['#FCC202', '#FCC202', '#FCC202', '#FCC202', '#FCC202']),
-            ))
-
-            # Atualizar layout e mostrar a figura
-            fig.update_layout(barmode='relative', title='', plot_bgcolor="rgba(0,0,0,0)",
-                          hoverlabel=dict(bgcolor='#FFFFFF'),
-                          template='simple_white',
-                          bargap=0, bargroupgap=0,
-                          margin=dict(l=1, r=1, t=60, b=1),
-                          xaxis_range=[df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] - 50000, -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]+ 50000], 
-                           xaxis=dict(tickvals=[df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] - 50000, df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] / 2, 0 , -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]/ 2, -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]+ 50000],
-                                      ),
-                                     )
-            fig.update_traces(width=0.5)
-            fig.update_xaxes(ticksuffix="")
-            fig.update_yaxes(ticksuffix="")
-            st.plotly_chart(fig, use_container_width=True)
-
-        plot_chart(estado, df)
-        
+        py.iplot(dict(data=data, layout=layout),) #filename='EXAMPLES/bar_pyramid')
     st.write('Divisão por escolaridade por estado')
     Q5, Q6 = st.columns(2)
 
@@ -812,19 +724,19 @@ else:
 
         with Q1:
             htmlFile = open(
-                "data/charts/municipios_1turno/mapa1_municipios_1turno.html", 'r', encoding='utf-8')
+                "Dashboard/data/charts/municipios_1turno/mapa1_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
         with Q2:
             htmlFile = open(
-                "data/charts/municipios_1turno/mapa2_municipios_1turno.html", 'r', encoding='utf-8')
+                "Dashboard/data/charts/municipios_1turno/mapa2_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
         with Q3:
             htmlFile = open(
-                "data/charts/municipios_1turno/mapa3_municipios_1turno.html", 'r', encoding='utf-8')
+                "Dashboard/data/charts/municipios_1turno/mapa3_municipios_1turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
@@ -832,7 +744,7 @@ else:
         Q4, Q5 = st.columns(2)
         with Q4:
             htmlFile = open(
-                "data/charts/municipios_2turno/mapa_municipios_2turno.html", 'r', encoding='utf-8')
+                "Dashboard/data/charts/municipios_2turno/mapa_municipios_2turno.html", 'r', encoding='utf-8')
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 

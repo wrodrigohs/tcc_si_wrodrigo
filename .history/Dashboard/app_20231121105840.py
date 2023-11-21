@@ -229,17 +229,18 @@ if ((dados == 'Estadual - 1º turno')
         fig = go.Figure()
 
         fig.add_trace(go.Bar(y=estados,
-                             x=mulheres,
+                             x=mulheres*-1,
                              customdata=mulheres.astype('int'),
                              hovertemplate='%{y} %{customdata}',
                              marker_color='#FCC202',
                              name='Mulheres',
                              orientation='h'))
 
-        fig.add_trace(go.Bar(y=estados, x=homens*-1,
+        fig.add_trace(go.Bar(y=estados, x=homens,
                              name='Homens',
                              customdata=homens.astype('int'),
                              hovertemplate='%{y} %{customdata}',
+                             text=1 * homens.astype('int'),
                              marker_color='#355070',
                              orientation='h'))
 
@@ -266,72 +267,44 @@ if ((dados == 'Estadual - 1º turno')
             estado = format_func_estado(estadoIndex)
             nomeEstado = [df.loc[(df['estado'] == estado, 'estado')].values[0]]
             
-            data = {
-                'estado': [estado],
-                'solteiro_masculino': [df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] * -1],
-                'casado_masculino': [df.loc[(df['estado'] == estado), 
-                  'casado_masculino'].values[0] * -1],
-                'divorciado_masculino': [df.loc[(df['estado'] == estado), 
-                  'divorciado_masculino'].values[0] * -1],
-                'viuvo_masculino': [df.loc[(df['estado'] == estado), 
-                  'viuvo_masculino'].values[0] * -1],
-                'separado_judicialmente_masculino': [df.loc[(df['estado'] == estado), 
-                  'separado_judicialmente_masculino'].values[0] * -1],
-                'solteiro_feminino': [df.loc[(df['estado'] == estado), 
-                  'solteiro_feminino'].values[0]],
-                'casado_feminino': [df.loc[(df['estado'] == estado), 
-                  'casado_feminino'].values[0]],
-                'divorciado_feminino': [df.loc[(df['estado'] == estado), 
-                  'divorciado_feminino'].values[0]],
-                'viuvo_feminino': [df.loc[(df['estado'] == estado), 
-                  'viuvo_feminino'].values[0]],
-                'separado_judicialmente_feminino': [df.loc[(df['estado'] == estado), 
-                  'separado_judicialmente_feminino'].values[0]],
-                }
+            homens = [df.loc[(df['estado'] == estado), 
+                estado_civil + '_masculino'].values[0]]
+            
+            mulheres = [df.loc[(df['estado'] == estado), 
+                estado_civil + '_feminino'].values[0]]
 
-            df = pd.DataFrame(data)
-            fig = go.Figure()
+            my_layout = Layout(hoverlabel=dict(
+                bgcolor='#FFFFFF'), template='simple_white')
 
-            fig.add_trace(go.Bar(
-                y=['Separado judicialmente', 'Divorciado', 'Solteiro', 'Casado', 'Viúvo'],
-                x=df[['separado_judicialmente_masculino', 'divorciado_masculino', 'solteiro_masculino', 'casado_masculino', 'viuvo_masculino']].iloc[0],
-                orientation='h',
-                name='Homens',
-                hoverinfo='x+text',
-                marker=dict(color=['#355070', '#355070', '#355070', '#355070', '#355070']),
-            ))
+            fig_sexoEstado = go.Figure()
+            fig_sexoEstado.add_trace(go.Bar(y=nomeEstado, x=homens,
+                                               name='',
+                                               hovertemplate='Homens: %{x:.2f}%',
+                                               marker_color='#355070',
+                                               orientation='h'))
 
-            # Adicionar barras correspondentes para mulheres
-            fig.add_trace(go.Bar(
-                y=['Separado judicialmente', 'Divorciado', 'Solteiro', 'Casado', 'Viúvo'],
-                x=df[['separado_judicialmente_feminino', 'divorciado_feminino', 'solteiro_feminino', 'casado_feminino', 'viuvo_feminino',]].iloc[0],
-                orientation='h',
-                name='Mulheres',
-                hoverinfo='x+text',
-                marker=dict(color=['#FCC202', '#FCC202', '#FCC202', '#FCC202', '#FCC202']),
-            ))
+            fig_sexoEstado.add_trace(go.Bar(y=nomeEstado, x=mulheres * -1,
+                                               hovertemplate='Mulheres: %{x:.2f}%',
+                                               marker_color='#FCC202',
+                                               name='',
+                                               orientation='h'))
 
-            # Atualizar layout e mostrar a figura
-            fig.update_layout(barmode='relative', title='', plot_bgcolor="rgba(0,0,0,0)",
-                          hoverlabel=dict(bgcolor='#FFFFFF'),
-                          template='simple_white',
-                          bargap=0, bargroupgap=0,
-                          margin=dict(l=1, r=1, t=60, b=1),
-                          xaxis_range=[df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] - 50000, -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]+ 50000], 
-                           xaxis=dict(tickvals=[df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] - 50000, df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] / 2, 0 , -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]/ 2, -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]+ 50000],
-                                      ),
-                                     )
-            fig.update_traces(width=0.5)
-            fig.update_xaxes(ticksuffix="")
-            fig.update_yaxes(ticksuffix="")
-            st.plotly_chart(fig, use_container_width=True)
+            fig_sexoEstado.update_layout(barmode='relative',
+                                            hoverlabel=dict(bgcolor='#FFFFFF'),
+                                            template='simple_white',
+                                            bargap=0, bargroupgap=0,
+                                            margin=dict(l=1, r=1, t=60, b=1),
+                                            xaxis_range=[-100, 100],
+                                            xaxis=dict(
+                                                tickvals=[0, 10, 20, 30, 40,
+                                                          50, 60, 70, 80, 90, 100],
+                                                ticktext=['0%', '10%', '20%', '30%', '40%', '50%',
+                                                          '60%', '70%', '80%', '90%', '100%']))
+
+            fig_sexoEstado.update_traces(width=0.5)
+            fig_sexoEstado.update_xaxes(ticksuffix="")
+            fig_sexoEstado.update_yaxes(ticksuffix="")
+            st.plotly_chart(fig_sexoEstado, use_container_width=True)
 
         plot_chart(estado, df)
         

@@ -271,13 +271,13 @@ if ((dados == 'Estadual - 1º turno')
                 'solteiro_masculino': [df.loc[(df['estado'] == estado), 
                   'solteiro_masculino'].values[0] * -1],
                 'casado_masculino': [df.loc[(df['estado'] == estado), 
-                  'casado_masculino'].values[0] * -1],
+                  'casado_masculino'].values[0]],
                 'divorciado_masculino': [df.loc[(df['estado'] == estado), 
-                  'divorciado_masculino'].values[0] * -1],
+                  'divorciado_masculino'].values[0]],
                 'viuvo_masculino': [df.loc[(df['estado'] == estado), 
-                  'viuvo_masculino'].values[0] * -1],
+                  'viuvo_masculino'].values[0]],
                 'separado_judicialmente_masculino': [df.loc[(df['estado'] == estado), 
-                  'separado_judicialmente_masculino'].values[0] * -1],
+                  'separado_judicialmente_masculino'].values[0]],
                 'solteiro_feminino': [df.loc[(df['estado'] == estado), 
                   'solteiro_feminino'].values[0]],
                 'casado_feminino': [df.loc[(df['estado'] == estado), 
@@ -291,6 +291,8 @@ if ((dados == 'Estadual - 1º turno')
                 }
 
             df = pd.DataFrame(data)
+            
+            st.write(df)
             fig = go.Figure()
 
             fig.add_trace(go.Bar(
@@ -313,20 +315,18 @@ if ((dados == 'Estadual - 1º turno')
             ))
 
             # Atualizar layout e mostrar a figura
-            fig.update_layout(barmode='relative', title='', plot_bgcolor="rgba(0,0,0,0)",
+            fig.update_layout(barmode='stack', title='', plot_bgcolor="rgba(0,0,0,0)",
                           hoverlabel=dict(bgcolor='#FFFFFF'),
                           template='simple_white',
                           bargap=0, bargroupgap=0,
                           margin=dict(l=1, r=1, t=60, b=1),
-                          xaxis_range=[df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] - 50000, -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]+ 50000], 
-                           xaxis=dict(tickvals=[df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] - 50000, df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0] / 2, 0 , -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]/ 2, -df.loc[(df['estado'] == estado), 
-                  'solteiro_masculino'].values[0]+ 50000],
-                                      ),
+                          xaxis_range=[-1000000, 1000000], 
+                        #   xaxis=dict(tickvals=[-8500000, -7000000, -5500000, -4000000, -2500000, 
+                        #                -1000000, 0, 1000000, 2500000, 4000000, 
+                        #                5500000, 7000000, 8500000],
+                        #              ticktext=['8500000', '7000000', '5500000', '4000000', '2500000', 
+                        #                '1000000', '0,' '1000000', '2500000', '4000000', 
+                        #                '5500000', '7000000', '8500000']),
                                      )
             fig.update_traces(width=0.5)
             fig.update_xaxes(ticksuffix="")
