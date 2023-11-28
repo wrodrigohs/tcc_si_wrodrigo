@@ -1036,12 +1036,10 @@ else:
                           bargap=0, bargroupgap=0,
                           margin=dict(l=1, r=1, t=60, b=1),
                           xaxis_range=[df['solteiro_masculino'], -1*df['solteiro_masculino']], 
-                        #    xaxis=dict(tickvals=[int(df['solteiro_masculino']), 
-                        #     int(df['solteiro_masculino']/2), 0, int(df['solteiro_masculino']/2),
-                        #     int(df['solteiro_masculino'])],
-                        #     ticktext=[int(df['solteiro_masculino']), int(df['solteiro_masculino']/2), 0, 
-                        #                 int(df['solteiro_masculino']/2), df['solteiro_masculino']],
-                        #               ),
+                           xaxis=dict(tickvals=[int(df['solteiro_masculino']), 
+                            int(df['solteiro_masculino']/2), 0, int(df['solteiro_masculino']/2),
+                            int(df['solteiro_masculino'])],
+                                      ),
                                      )
             fig.update_traces(width=0.5)
             fig.update_xaxes(ticksuffix="")

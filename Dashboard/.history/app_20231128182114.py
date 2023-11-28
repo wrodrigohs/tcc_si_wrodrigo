@@ -974,7 +974,6 @@ else:
             
             data = {
                 'estado': [estado],
-                'municipio': [cidade],
                 'solteiro_masculino': [df.loc[(df['estado'] == estado) 
                                               & (df['municipio'] == cidade[0]), 
                   'solteiro_masculino'].values[0] * -1],
@@ -1035,13 +1034,16 @@ else:
                           template='simple_white',
                           bargap=0, bargroupgap=0,
                           margin=dict(l=1, r=1, t=60, b=1),
-                          xaxis_range=[df['solteiro_masculino'], -1*df['solteiro_masculino']], 
-                        #    xaxis=dict(tickvals=[int(df['solteiro_masculino']), 
-                        #     int(df['solteiro_masculino']/2), 0, int(df['solteiro_masculino']/2),
-                        #     int(df['solteiro_masculino'])],
-                        #     ticktext=[int(df['solteiro_masculino']), int(df['solteiro_masculino']/2), 0, 
-                        #                 int(df['solteiro_masculino']/2), df['solteiro_masculino']],
-                        #               ),
+                          xaxis_range=[df.loc[(df['estado'] == estado) 
+                                              & (df['municipio'] == cidade[0]), 
+                  'solteiro_masculino'].values[0], -df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0]+ 50000], 
+                           xaxis=dict(tickvals=[df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0] - 50000, df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0] / 2, 0 , -df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0]/ 2, -df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0]+ 50000],
+                                      ),
                                      )
             fig.update_traces(width=0.5)
             fig.update_xaxes(ticksuffix="")

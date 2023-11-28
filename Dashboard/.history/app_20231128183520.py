@@ -977,7 +977,7 @@ else:
                 'municipio': [cidade],
                 'solteiro_masculino': [df.loc[(df['estado'] == estado) 
                                               & (df['municipio'] == cidade[0]), 
-                  'solteiro_masculino'].values[0] * -1],
+                  'solteiro_masculino'].values[0]],
                 'casado_masculino': [df.loc[(df['estado'] == estado) 
                                             & (df['municipio'] == cidade[0]), 
                   'casado_masculino'].values[0] * -1],

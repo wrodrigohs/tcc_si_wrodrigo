@@ -921,18 +921,23 @@ else:
             if (estado_civil == 'separado judicialmente'):
                 estado_civil = 'separado_judicialmente'
 
-            top_10_estado_civil = df[['estado', 'municipio', estado_civil, estado_civil + '_masculino',
+            top_10_estado_civil = df[['estado', 'municipio', estado_civil + '_masculino',
                                       estado_civil + '_feminino']].sort_values(
-                by=estado_civil, ascending=False)[:10]
+                by='municipio', ascending=False)[:10]
 
-            homens = top_10_estado_civil[estado_civil + '_masculino']
-            mulheres = top_10_estado_civil[estado_civil + '_feminino']
+            homens = [df.loc[(df['estado'] == estado)
+                    & (df['municipio'] == cidade), 
+                    estado_civil +'_masculino']] #df[estado_civil + '_masculino']
+            mulheres = [df.loc[(df['estado'] == estado)
+                    & (df['municipio'] == cidade), 
+                    estado_civil +'_feminino']]#df[estado_civil + '_feminino']
 
+            st.write(mulheres)
             estados = df['estado'].drop_duplicates()
 
             fig = go.Figure()
 
-            fig.add_trace(go.Bar(y=top_10_estado_civil['municipio'],
+            fig.add_trace(go.Bar(y=estados,
                                 x=mulheres,
                                 customdata=mulheres.astype('int'),
                                 hovertemplate='%{y} %{customdata}',
@@ -940,7 +945,7 @@ else:
                                 name='Mulheres',
                                 orientation='h'))
 
-            fig.add_trace(go.Bar(y=top_10_estado_civil['municipio'], x=homens*-1,
+            fig.add_trace(go.Bar(y=estados, x=homens*-1,
                                 name='Homens',
                                 customdata=homens.astype('int'),
                                 hovertemplate='%{y} %{customdata}',
@@ -953,12 +958,14 @@ else:
                             template='simple_white',
                             bargap=0, bargroupgap=0,
                             margin=dict(l=1, r=1, t=60, b=1),
-                            xaxis_range=[-1*mulheres.max(), mulheres.max()], 
-                            xaxis=dict(tickvals=[-1*mulheres.max(), -1*mulheres.max()/2, 0, 
-                                        mulheres.max()/2, mulheres.max()],
-                                        ticktext=[int(mulheres.max()), int(mulheres.max()/2), 0, 
-                                        int(mulheres.max()/2), mulheres.max()]),
-                                    )
+                            xaxis_range=[-8500000, 8500000], 
+                            xaxis=dict(tickvals=[-8500000, -7000000, -5500000, -4000000, -2500000, 
+                                        -1000000, 0, 1000000, 2500000, 4000000, 
+                                        5500000, 7000000, 8500000],
+                                        ticktext=['8500000', '7000000', '5500000', '4000000', '2500000', 
+                                        '1000000', '0,' '1000000', '2500000', '4000000', 
+                                        '5500000', '7000000', '8500000']),
+                                        )
 
             fig.update_traces(width=0.5)
             st.plotly_chart(fig, use_container_width=True)
@@ -966,44 +973,31 @@ else:
         plot_chart(estado, municipios, indexMunicipio, df)
 
     with Q83:
-        def plot_chart(estadoIndex, municipios, index, df):
-    
+        def plot_chart(estadoIndex, df):
             estado = format_func_estado(estadoIndex)
-            cidade = [municipios[index]]
             nomeEstado = [df.loc[(df['estado'] == estado, 'estado')].values[0]]
             
             data = {
                 'estado': [estado],
-                'municipio': [cidade],
-                'solteiro_masculino': [df.loc[(df['estado'] == estado) 
-                                              & (df['municipio'] == cidade[0]), 
+                'solteiro_masculino': [df.loc[(df['estado'] == estado), 
                   'solteiro_masculino'].values[0] * -1],
-                'casado_masculino': [df.loc[(df['estado'] == estado) 
-                                            & (df['municipio'] == cidade[0]), 
+                'casado_masculino': [df.loc[(df['estado'] == estado), 
                   'casado_masculino'].values[0] * -1],
-                'divorciado_masculino': [df.loc[(df['estado'] == estado)
-                                                & (df['municipio'] == cidade[0]), 
+                'divorciado_masculino': [df.loc[(df['estado'] == estado), 
                   'divorciado_masculino'].values[0] * -1],
-                'viuvo_masculino': [df.loc[(df['estado'] == estado)
-                                           & (df['municipio'] == cidade[0]), 
+                'viuvo_masculino': [df.loc[(df['estado'] == estado), 
                   'viuvo_masculino'].values[0] * -1],
-                'separado_judicialmente_masculino': [df.loc[(df['estado'] == estado)
-                                                            & (df['municipio'] == cidade[0]), 
+                'separado_judicialmente_masculino': [df.loc[(df['estado'] == estado), 
                   'separado_judicialmente_masculino'].values[0] * -1],
-                'solteiro_feminino': [df.loc[(df['estado'] == estado) 
-                                             & (df['municipio'] == cidade[0]), 
+                'solteiro_feminino': [df.loc[(df['estado'] == estado), 
                   'solteiro_feminino'].values[0]],
-                'casado_feminino': [df.loc[(df['estado'] == estado) 
-                                           & (df['municipio'] == cidade[0]), 
+                'casado_feminino': [df.loc[(df['estado'] == estado), 
                   'casado_feminino'].values[0]],
-                'divorciado_feminino': [df.loc[(df['estado'] == estado)
-                                               & (df['municipio'] == cidade[0]), 
+                'divorciado_feminino': [df.loc[(df['estado'] == estado), 
                   'divorciado_feminino'].values[0]],
-                'viuvo_feminino': [df.loc[(df['estado'] == estado)
-                                          & (df['municipio'] == cidade[0]), 
+                'viuvo_feminino': [df.loc[(df['estado'] == estado), 
                   'viuvo_feminino'].values[0]],
-                'separado_judicialmente_feminino': [df.loc[(df['estado'] == estado)
-                                                           & (df['municipio'] == cidade[0]), 
+                'separado_judicialmente_feminino': [df.loc[(df['estado'] == estado), 
                   'separado_judicialmente_feminino'].values[0]],
                 }
 
@@ -1035,20 +1029,22 @@ else:
                           template='simple_white',
                           bargap=0, bargroupgap=0,
                           margin=dict(l=1, r=1, t=60, b=1),
-                          xaxis_range=[df['solteiro_masculino'], -1*df['solteiro_masculino']], 
-                        #    xaxis=dict(tickvals=[int(df['solteiro_masculino']), 
-                        #     int(df['solteiro_masculino']/2), 0, int(df['solteiro_masculino']/2),
-                        #     int(df['solteiro_masculino'])],
-                        #     ticktext=[int(df['solteiro_masculino']), int(df['solteiro_masculino']/2), 0, 
-                        #                 int(df['solteiro_masculino']/2), df['solteiro_masculino']],
-                        #               ),
+                          xaxis_range=[df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0] - 50000, -df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0]+ 50000], 
+                           xaxis=dict(tickvals=[df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0] - 50000, df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0] / 2, 0 , -df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0]/ 2, -df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0]+ 50000],
+                                      ),
                                      )
             fig.update_traces(width=0.5)
             fig.update_xaxes(ticksuffix="")
             fig.update_yaxes(ticksuffix="")
             st.plotly_chart(fig, use_container_width=True)
 
-        plot_chart(estado, municipios, indexMunicipio, df)
+        plot_chart(estado, df)
 
     with Q7:
         #ESCOLARIDADE POR MUNICÍPIO

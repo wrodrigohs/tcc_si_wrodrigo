@@ -1029,19 +1029,22 @@ else:
                 marker=dict(color=['#FCC202', '#FCC202', '#FCC202', '#FCC202', '#FCC202']),
             ))
 
+            st.write(df['solteiro_masculino'])
             # Atualizar layout e mostrar a figura
             fig.update_layout(barmode='relative', title='', plot_bgcolor="rgba(0,0,0,0)",
                           hoverlabel=dict(bgcolor='#FFFFFF'),
                           template='simple_white',
                           bargap=0, bargroupgap=0,
                           margin=dict(l=1, r=1, t=60, b=1),
-                          xaxis_range=[df['solteiro_masculino'], -1*df['solteiro_masculino']], 
-                        #    xaxis=dict(tickvals=[int(df['solteiro_masculino']), 
-                        #     int(df['solteiro_masculino']/2), 0, int(df['solteiro_masculino']/2),
-                        #     int(df['solteiro_masculino'])],
-                        #     ticktext=[int(df['solteiro_masculino']), int(df['solteiro_masculino']/2), 0, 
-                        #                 int(df['solteiro_masculino']/2), df['solteiro_masculino']],
-                        #               ),
+                          xaxis_range=[df['solteiro_masculino'], df.loc[(df['estado'] == estado) 
+                                              & (df['municipio'] == cidade[0]), 
+                  'solteiro_masculino'].values[0]], 
+                           xaxis=dict(tickvals=[df.loc[(df['estado'] == estado) & (df['municipio'] == cidade[0]),
+                  'solteiro_masculino'].values[0] - 50000, df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0] / 2, 0 , -df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0]/ 2, -df.loc[(df['estado'] == estado), 
+                  'solteiro_masculino'].values[0]+ 50000],
+                                      ),
                                      )
             fig.update_traces(width=0.5)
             fig.update_xaxes(ticksuffix="")
