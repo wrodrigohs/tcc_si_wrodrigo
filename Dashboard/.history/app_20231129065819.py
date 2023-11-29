@@ -414,28 +414,28 @@ if ((dados == 'Estadual - 1º turno')
                 fig = go.Figure(data=[
                     go.Bar(name='Analfabeto', x=nomeEstado, y=analfabeto,
                         hovertemplate='Analfabeto: {}%'.format(
-                        str(analfabeto[0]).replace('.', ',')), marker_color='#355070', showlegend=True),
+                        str(analfabeto[0]).replace('.', ',')), marker_color='#355070', showlegend=False),
                     go.Bar(name='Lê e escreve', x=nomeEstado, y=le_escreve,
                         hovertemplate='Lê e escreve: {}%'.format(
-                    str(le_escreve[0]).replace('.', ',')), marker_color='#597092', showlegend=True),
+                    str(le_escreve[0]).replace('.', ',')), marker_color='#597092', showlegend=False),
                     go.Bar(name='Fundamental incompleto', x=nomeEstado, y=fundamental_incompleto,
                         hovertemplate='Fundamental incompleto: {}%'.format(
-                    str(fundamental_incompleto[0]).replace('.', ',')), marker_color='#7179E6', showlegend=True),
+                    str(fundamental_incompleto[0]).replace('.', ',')), marker_color='#7179E6', showlegend=False),
                     go.Bar(name='Fundamental completo', x=nomeEstado, y=fundamental_completo,
                         hovertemplate='Fundamental completo: {}%'.format(
-                    str(fundamental_completo[0]).replace('.', ',')), marker_color='#DEE0FC', showlegend=True),
+                    str(fundamental_completo[0]).replace('.', ',')), marker_color='#DEE0FC', showlegend=False),
                     go.Bar(name='Médio incompleto', x=nomeEstado, y=medio_incompleto,
                         hovertemplate='Médio incompleto: {}%'.format(
-                    str(medio_incompleto[0]).replace('.', ',')), marker_color='#E9DEFC', showlegend=True),
+                    str(medio_incompleto[0]).replace('.', ',')), marker_color='#E9DEFC', showlegend=False),
                     go.Bar(name='Médio completo', x=nomeEstado, y=medio_completo,
                         hovertemplate='Médio completo: {}%'.format(
-                    str(medio_completo[0]).replace('.', ',')), marker_color='#FEE592', showlegend=True),
+                    str(medio_completo[0]).replace('.', ',')), marker_color='#FEE592', showlegend=False),
                     go.Bar(name='Superior incompleto', x=nomeEstado, y=superior_incompleto,
                         hovertemplate='Superior incompleto: {}%'.format(
-                    str(superior_incompleto[0]).replace('.', ',')), marker_color='#E6DD39', showlegend=True),
+                    str(superior_incompleto[0]).replace('.', ',')), marker_color='#E6DD39', showlegend=False),
                     go.Bar(name='Superior completo', x=nomeEstado, y=superior_completo,
                         hovertemplate='Superior completo: {}%'.format(
-                    str(superior_completo[0]).replace('.', ',')), marker_color='#FCC202', showlegend=True)
+                    str(superior_completo[0]).replace('.', ',')), marker_color='#FCC202', showlegend=False)
                 ], layout=my_layout)
 
                 fig.update_layout(
@@ -828,25 +828,6 @@ else:
             source_code = htmlFile.read()
             components.html(source_code, height=480)
 
-        with st.empty():
-            def plot_chart(estadoIndex, municipios, index, df):
-                estado = format_func_estado(estadoIndex)
-                cidade = municipios[index]
-
-                valor = df.loc[(df['estado'] == estado)
-                            & (df['municipio'] == cidade), 'comparecimento_percentual(%)'].values[0]
-                fig = go.Figure(
-                    go.Indicator(
-                        value=valor,
-                        title={'text': f"Comparecimento percentual em {cidade}"},
-                        number={'font_color': '#355070', "suffix": "%",
-                                'font_size': 80, "valueformat": ".2f"},
-                        align='center'))
-
-                st.plotly_chart(fig, use_container_width=True)
-
-            plot_chart(estado, municipios, indexMunicipio, df)
-
     else:
         Q4, Q5 = st.columns(2)
         with Q4:
@@ -872,8 +853,7 @@ else:
 
                 st.plotly_chart(fig, use_container_width=True)
 
-            plot_chart(estado, municipios, indexMunicipio, df)
-
+            plot_chart(estado, municipios, indexMunicipio, df)    
     Q6, Q7 = st.columns(2)
 
     with Q6:
@@ -896,18 +876,16 @@ else:
 
             fig_sexoMunicipio = go.Figure()
             fig_sexoMunicipio.add_trace(go.Bar(y=cidade, x=homens,
-                                               name='Homens',
+                                               name='',
                                                hovertemplate='Homens: %{x:.2f}%',
                                                marker_color='#355070',
-                                               orientation='h',
-                                               showlegend=True))
+                                               orientation='h'))
 
             fig_sexoMunicipio.add_trace(go.Bar(y=cidade, x=mulheres,
                                                hovertemplate='Mulheres: %{x:.2f}%',
                                                marker_color='#FCC202',
-                                               name='Mulheres',
-                                               orientation='h',
-                                               showlegend=True))
+                                               name='',
+                                               orientation='h'))
 
             fig_sexoMunicipio.update_layout(barmode='relative',
                                             hoverlabel=dict(bgcolor='#FFFFFF'),
@@ -1106,30 +1084,30 @@ else:
                 bgcolor='#FFFFFF'), template='simple_white')
 
             fig = go.Figure(data=[
-                go.Bar(name='Analfabeto', x=cidade, y=analfabeto,
+                go.Bar(name='', x=cidade, y=analfabeto,
                        hovertemplate='Analfabeto: {}%'.format(
-                       str(analfabeto[0]).replace('.', ',')), marker_color='#355070', showlegend=True),
-                go.Bar(name='Lê e escreve', x=cidade, y=le_escreve,
+                       str(analfabeto[0]).replace('.', ',')), marker_color='#355070', showlegend=False),
+                go.Bar(name='', x=cidade, y=le_escreve,
                        hovertemplate='Lê e escreve: {}%'.format(
-                str(le_escreve[0]).replace('.', ',')), marker_color='#597092', showlegend=True),
-                go.Bar(name='Fundamental incompleto', x=cidade, y=fundamental_incompleto,
+                str(le_escreve[0]).replace('.', ',')), marker_color='#597092', showlegend=False),
+                go.Bar(name='', x=cidade, y=fundamental_incompleto,
                        hovertemplate='Fundamental incompleto: {}%'.format(
-                str(fundamental_incompleto[0]).replace('.', ',')), marker_color='#7179E6', showlegend=True),
-                go.Bar(name='Fundamental completo', x=cidade, y=fundamental_completo,
+                str(fundamental_incompleto[0]).replace('.', ',')), marker_color='#7179E6', showlegend=False),
+                go.Bar(name='', x=cidade, y=fundamental_completo,
                        hovertemplate='Fundamental completo: {}%'.format(
-                str(fundamental_completo[0]).replace('.', ',')), marker_color='#DEE0FC', showlegend=True),
-                go.Bar(name='Médio incompleto', x=cidade, y=medio_incompleto,
+                str(fundamental_completo[0]).replace('.', ',')), marker_color='#DEE0FC', showlegend=False),
+                go.Bar(name='', x=cidade, y=medio_incompleto,
                        hovertemplate='Médio incompleto: {}%'.format(
-                str(medio_incompleto[0]).replace('.', ',')), marker_color='#E9DEFC', showlegend=True),
-                go.Bar(name='Médio completo', x=cidade, y=medio_completo,
+                str(medio_incompleto[0]).replace('.', ',')), marker_color='#E9DEFC', showlegend=False),
+                go.Bar(name='', x=cidade, y=medio_completo,
                        hovertemplate='Médio completo: {}%'.format(
-                str(medio_completo[0]).replace('.', ',')), marker_color='#FEE592', showlegend=True),
-                go.Bar(name='Superior incompleto', x=cidade, y=superior_incompleto,
+                str(medio_completo[0]).replace('.', ',')), marker_color='#FEE592', showlegend=False),
+                go.Bar(name='', x=cidade, y=superior_incompleto,
                        hovertemplate='Superior incompleto: {}%'.format(
-                str(superior_incompleto[0]).replace('.', ',')), marker_color='#E6DD39', showlegend=True),
-                go.Bar(name='Superior completo', x=cidade, y=superior_completo,
+                str(superior_incompleto[0]).replace('.', ',')), marker_color='#E6DD39', showlegend=False),
+                go.Bar(name='', x=cidade, y=superior_completo,
                        hovertemplate='Superior completo: {}%'.format(
-                str(superior_completo[0]).replace('.', ',')), marker_color='#FCC202', showlegend=True)
+                str(superior_completo[0]).replace('.', ',')), marker_color='#FCC202', showlegend=False)
             ], layout=my_layout)
 
             fig.update_layout(

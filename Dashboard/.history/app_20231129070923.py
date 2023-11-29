@@ -1106,30 +1106,30 @@ else:
                 bgcolor='#FFFFFF'), template='simple_white')
 
             fig = go.Figure(data=[
-                go.Bar(name='Analfabeto', x=cidade, y=analfabeto,
+                go.Bar(name='', x=cidade, y=analfabeto,
                        hovertemplate='Analfabeto: {}%'.format(
-                       str(analfabeto[0]).replace('.', ',')), marker_color='#355070', showlegend=True),
-                go.Bar(name='Lê e escreve', x=cidade, y=le_escreve,
+                       str(analfabeto[0]).replace('.', ',')), marker_color='#355070', showlegend=False),
+                go.Bar(name='', x=cidade, y=le_escreve,
                        hovertemplate='Lê e escreve: {}%'.format(
-                str(le_escreve[0]).replace('.', ',')), marker_color='#597092', showlegend=True),
-                go.Bar(name='Fundamental incompleto', x=cidade, y=fundamental_incompleto,
+                str(le_escreve[0]).replace('.', ',')), marker_color='#597092', showlegend=False),
+                go.Bar(name='', x=cidade, y=fundamental_incompleto,
                        hovertemplate='Fundamental incompleto: {}%'.format(
-                str(fundamental_incompleto[0]).replace('.', ',')), marker_color='#7179E6', showlegend=True),
-                go.Bar(name='Fundamental completo', x=cidade, y=fundamental_completo,
+                str(fundamental_incompleto[0]).replace('.', ',')), marker_color='#7179E6', showlegend=False),
+                go.Bar(name='', x=cidade, y=fundamental_completo,
                        hovertemplate='Fundamental completo: {}%'.format(
-                str(fundamental_completo[0]).replace('.', ',')), marker_color='#DEE0FC', showlegend=True),
-                go.Bar(name='Médio incompleto', x=cidade, y=medio_incompleto,
+                str(fundamental_completo[0]).replace('.', ',')), marker_color='#DEE0FC', showlegend=False),
+                go.Bar(name='', x=cidade, y=medio_incompleto,
                        hovertemplate='Médio incompleto: {}%'.format(
-                str(medio_incompleto[0]).replace('.', ',')), marker_color='#E9DEFC', showlegend=True),
-                go.Bar(name='Médio completo', x=cidade, y=medio_completo,
+                str(medio_incompleto[0]).replace('.', ',')), marker_color='#E9DEFC', showlegend=False),
+                go.Bar(name='', x=cidade, y=medio_completo,
                        hovertemplate='Médio completo: {}%'.format(
-                str(medio_completo[0]).replace('.', ',')), marker_color='#FEE592', showlegend=True),
-                go.Bar(name='Superior incompleto', x=cidade, y=superior_incompleto,
+                str(medio_completo[0]).replace('.', ',')), marker_color='#FEE592', showlegend=False),
+                go.Bar(name='', x=cidade, y=superior_incompleto,
                        hovertemplate='Superior incompleto: {}%'.format(
-                str(superior_incompleto[0]).replace('.', ',')), marker_color='#E6DD39', showlegend=True),
-                go.Bar(name='Superior completo', x=cidade, y=superior_completo,
+                str(superior_incompleto[0]).replace('.', ',')), marker_color='#E6DD39', showlegend=False),
+                go.Bar(name='', x=cidade, y=superior_completo,
                        hovertemplate='Superior completo: {}%'.format(
-                str(superior_completo[0]).replace('.', ',')), marker_color='#FCC202', showlegend=True)
+                str(superior_completo[0]).replace('.', ',')), marker_color='#FCC202', showlegend=False)
             ], layout=my_layout)
 
             fig.update_layout(
